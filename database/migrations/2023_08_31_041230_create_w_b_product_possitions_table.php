@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('sku');
             $table->string('keyword');
             $table->integer('position')->nullable();
+            $table->integer('position_before')->nullable();
             $table->integer('ads')->default(0);
+            $table->integer('ads_bet')->default(0);
             $table->string('position_date');
             $table->timestamps();
         });

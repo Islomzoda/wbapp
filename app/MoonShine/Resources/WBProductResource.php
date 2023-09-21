@@ -6,6 +6,7 @@ use App\Models\MarketAccess;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\WBProduct;
 
+use MoonShine\Fields\NoInput;
 use MoonShine\Fields\Text;
 use MoonShine\Filters\SwitchBooleanFilter;
 use MoonShine\Resources\Resource;
@@ -23,12 +24,9 @@ class WBProductResource extends Resource
 	{
 		return [
             ID::make()->sortable(),
-		    Text::make(
-                'SKU', 'vendor_code')->disabled(),
-            Text::make(
-                'BARCODE', 'nm_id'
-            )->disabled(),
-
+		    Text::make('SKU', 'vendor_code')->disabled(),
+            Text::make('BARCODE', 'nm_id')->disabled(),
+            NoInput::make('Опубликовано', 'is_prohibited', fn($q) => $q->is_prohibited ? 'green' : 'red')->badge(fn($q) => $q->is_prohibited ? 'green' : 'red')
         ];
 	}
     public function query(): Builder

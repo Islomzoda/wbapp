@@ -3,12 +3,17 @@
 namespace App\MoonShine\Resources;
 
 use App\Models\MarketAccess;
+use App\MoonShine\Pages\WeeklyAnalyticTablePage;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\WBProductPossition;
 
+use MoonShine\Decorations\Button;
 use MoonShine\Fields\NoInput;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\Text;
+use MoonShine\Filters\SelectFilter;
+use MoonShine\Filters\TextFilter;
+use MoonShine\ItemActions\ItemAction;
 use MoonShine\Resources\Resource;
 use MoonShine\Fields\ID;
 use MoonShine\Actions\FiltersAction;
@@ -25,7 +30,10 @@ class WBProductPossitionResource extends Resource
 		return [
 		    ID::make()->sortable(),
             Text::make('SKU', 'sku'),
-            Text::make('Ключевое слово', 'keyword'),
+            NoInput::make('Ключевое слово', 'keyword')->link(function ($q){
+                return 'https://www.wildberries.ru/catalog/0/search.aspx?search=' . $q->keyword;
+            }),
+            Number::make('Позиция до', 'position_before')->sortable(),
             NoInput::make('Позиция', 'position')->badge(function ($item) {
                 if ($item->ads == 1) return "blue";
                 if($item->position <= 10) {
@@ -46,10 +54,10 @@ class WBProductPossitionResource extends Resource
                 if ($item->ads == 1) return "blue";
                 return 'gray';
             }),
-
+            Number::make('Ставка', 'ads_bet')->sortable(),
+            NoInput::make('Аналитика',  'ads', fn() => 'Аналитика')->link( $this->getItem() ? route('weekly-analytic-table-page', $this->getItem()) : '/weekly-analytic-table-page', true),
         ];
 	}
-
     public function query(): Builder
     {
         return parent::query()
@@ -72,29 +80,19 @@ class WBProductPossitionResource extends Resource
         ];
     }
 
-//    public function trClass(Model $item, int $index): string
-//    {
-//        if ($item->ads == 1) return "Blue";
-//        if($item->position <= 10) {
-//            return 'green';
-//        }elseif ($item->position <= 50) {
-//            return 'yellow';
-//        }else{
-//            return 'red';
-//        }
-//
-//        return parent::trClass($item, $index);
-//    }
-
     public function search(): array
     {
-        return ['sku'];
+        return ['keyword'];
     }
 
     public function filters(): array
     {
         return [
-
+            SelectFilter::make('Реклама', 'ads')->options([
+                    '0' =>  'Органика',
+                    '1' => 'Бустер'
+            ]),
+            TextFilter::make('SKU', 'sku')
         ];
     }
 

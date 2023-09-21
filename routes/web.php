@@ -1,5 +1,6 @@
 <?php
 
+use App\MoonShine\Pages\WeeklyAnalyticTablePage;
 use App\Services\WBPossitionService;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/admin/custom_page/weekly-analytic-table-page?{id}', function ($id) {
+//
+    return  WeeklyAnalyticTablePage::make('Аналитика', 'weekly-analytic-table-page', 'table', ['id' => $id]);
+})->name('weekly-analytic-table-page');
 Route::get('/test', [WBPossitionService::class, 'test']);

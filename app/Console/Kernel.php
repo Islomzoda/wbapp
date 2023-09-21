@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Models\WBProductKeyword;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Artisan;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,7 +18,9 @@ class Kernel extends ConsoleKernel
         $schedule->call(function (){
            $ids = WBProductKeyword::all()->pluck('id');
            WBProductKeyword::whereIn('id', $ids)->update(['updated' => false]);
-        })->daily();
+           Artisan::call(' position:check');
+        })->dailyAt('02:00');
+
     }
 
     /**

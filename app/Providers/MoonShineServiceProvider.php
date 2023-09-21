@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\MoonShine\Pages\WeeklyAnalyticTablePage;
 use App\MoonShine\Resources\MarketAccessResource;
 use App\MoonShine\Resources\WBProductKeywordResource;
 use App\MoonShine\Resources\WBProductPossitionResource;
@@ -31,7 +32,7 @@ class MoonShineServiceProvider extends ServiceProvider
 
                 MenuItem::make('Позиции', new WBProductPossitionResource()),
                 MenuItem::make('Доступные Магазины', new MarketAccessResource())->canSee(fn() => auth()->user()->moonshine_user_role_id === 1),
-
+                MenuItem::make('Аналитика', new WeeklyAnalyticTablePage())->canSee(fn() => false)
             ])
         ]);
     }

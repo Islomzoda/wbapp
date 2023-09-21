@@ -20,7 +20,7 @@ class WBResource extends Resource
 
 	public static string $title = 'WBS';
 
-	public function fields(): array
+    public function fields(): array
 	{
 		return [
 		    ID::make()->sortable(),

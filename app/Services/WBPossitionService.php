@@ -40,12 +40,20 @@ class WBPossitionService
             foreach ($positions as $key_position => $position) {
                 if (in_array($position['id'], $skus)){
                     $product = WBProduct::where('nm_id', $position['id'])->first();
+                    $position_before = 0;
+                    $ads_bet = 0;
+                    if (!empty($position['log'])){
+                        $position_before = $position['log']['position'];
+                        $ads_bet = $position['log']['cpm'];
+                    }
                     WBProductPossition::create([
                         'brand_id' => $brand_id,
                         'sku' => $product['vendor_code'],
                         'keyword' => $key['keyword'],
                         'position' => $key_position,
+                        'position_before' => $position_before,
                         'ads' => empty($position['log']) ? 0 : 1,
+                        'ads_bet' => $ads_bet,
                         'position_date' => today()->format('d-m-Y')
                     ]);
                 }

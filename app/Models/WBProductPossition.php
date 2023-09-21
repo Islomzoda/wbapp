@@ -15,6 +15,8 @@ class WBProductPossition extends Model
         'keyword',
         'position',
         'ads',
+        'position_before',
+        'ads_bet',
         'position_date'
     ];
 
