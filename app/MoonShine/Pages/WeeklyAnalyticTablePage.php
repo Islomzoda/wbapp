@@ -28,9 +28,10 @@ class WeeklyAnalyticTablePage extends CustomPage
 
 	public function datas(): array
 	{
-       $keyword = WBProductPossition::where('id', key(request()->all()))->first()->sku;
+       $keyword = WBProductPossition::where('id', key(request()->all()))->first();
 
-       $items = WBProductPossition::where('sku', $keyword)->whereBetween('created_at', [today()->subWeek(), now()])->get();
+       $items = WBProductPossition::where('sku', $keyword->sku)
+                                        ->where('keyword', $keyword->keyword)->whereBetween('created_at', [today()->subWeek(), now()])->get();
         $dates = [];
         $position = [];
         foreach ($items as $item) {

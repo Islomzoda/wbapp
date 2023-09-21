@@ -27,7 +27,6 @@ class UpdateFalseCommand extends Command
     public function handle()
     {
         $ids = WBProductKeyword::all()->pluck('id');
-//        dd($ids);
         WBProductKeyword::whereIn('id', $ids)->update(['updated' => false]);
     }
 }
