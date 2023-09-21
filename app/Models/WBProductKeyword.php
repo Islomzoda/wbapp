@@ -12,7 +12,8 @@ class WBProductKeyword extends Model
     protected $fillable = [
         'user_id',
         'brand_id',
-        'keyword'
+        'keyword',
+        'updated'
     ];
     public function markets()
     {
